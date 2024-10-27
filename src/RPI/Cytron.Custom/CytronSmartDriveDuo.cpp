@@ -19,21 +19,15 @@ CytronSmartDriveDuo::CytronSmartDriveDuo(int m1_pwm, int m1_dir, int m2_pwm, int
 /// <param name="direction"></param>
 /// <param name="m1_speed">left</param>
 /// <param name="m2_speed">right</param>
-void CytronSmartDriveDuo::setMotors(int direction, int m1_speed, int m2_speed) {
+void CytronSmartDriveDuo::setMotors(int m1_direction, int m2_direction, int m1_speed, int m2_speed) {
 	
 	//kvuli bagu primo na dirveru, nutne nastavit jednu hodnotu vzdy na zapornou
-	if (direction == 0) {
+	if (m1_direction == 0 && m2_direction == 0) {
 		m1.setMotor(m1_speed);
 		m2.setMotor(-1 * m2_speed);
 	}
-	else if (direction == 1) {
+	if (m1_direction == 1 && m2_direction == 1) {
 		m1.setMotor(-1 * m1_speed);
-		m2.setMotor(m2_speed);
-	}
-	//otocka na miste, direction == 2 
-	//asi ted nice to have...
-	else {
-		m1.setMotor(m1_speed);
 		m2.setMotor(m2_speed);
 	}
 }

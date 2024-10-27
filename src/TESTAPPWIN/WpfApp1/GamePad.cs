@@ -37,7 +37,7 @@ namespace WpfApp1
         public event EventHandler<bool> RightBtns_BottomBtn_Changed;
         #endregion
 
-        private const int centerAxisTolerance = 10;
+        private const int centerAxisTolerance = 6;
 
         private GamePadState state;
         private DirectInput directInput;
@@ -73,7 +73,7 @@ namespace WpfApp1
             {
                 joystick.Poll();
                 CompareStatesAndInvokeEvents(new GamePadState(joystick.GetCurrentState()));
-                await Task.Delay(125);
+                await Task.Delay(250);
             }
         }
 

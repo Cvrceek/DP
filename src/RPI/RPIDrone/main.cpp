@@ -45,15 +45,16 @@ int main() {
         //std::string result(frameData.begin() + 5, frameData.end());
 
 
-        int dir = static_cast<int>(frameData.data[5]);
+        int dir_r = static_cast<int>(frameData.data[5]);
         int right = static_cast<int>(frameData.data[6]);
-        int left =  static_cast<int>(frameData.data[7]);
+        int dir_l = static_cast<int>(frameData.data[7]);
+        int left =  static_cast<int>(frameData.data[8]);
 
 
-        mainMotors.setMotors(dir, left, right);
+       // mainMotors.setMotors(dir_l, dir_r, left, right);
 
         // Výpis výsledného řetězce
-        std::cout << "Complete frame: " << static_cast<int>(dir) << " " << static_cast<int>(right) << " " << static_cast<int>(left) << std::endl;
+        std::cout << "Complete frame: " << static_cast<int>(dir_r) << " " << static_cast<int>(left) << " " << static_cast<int>(right) << std::endl;
         std::cout << std::endl;
         });
 

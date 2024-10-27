@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Security.Permissions;
 using System.Text;
+using System.Windows.Automation.Peers;
 using System.Windows.Documents;
 
 namespace WpfApp1
@@ -12,32 +13,46 @@ namespace WpfApp1
     //pochopení logiky vychází z "Mobile Robots: Navigation, Control and Remote Sensing" od Gerald Cook a Feitian Zhang.
     public class MotorsValues
     {
+        public byte SpeedRight = 0;
+        public byte SpeedLeft = 0;
+        public byte OrientationRight = 0;
+        public byte OrientationLeft = 0;
+
         public MotorsValues() { }
         public MotorsValues(int speed, int direction)
         {
             //provotni nastaveni orientace, dle hodnoty rychlosti
             OrientationRight = OrientationLeft = (byte)(speed >= 0 ? 1 : 0);
 
-
-            decimal speedRight = (Math.Abs(speed) * (100 - direction)) / 100.0m;
-            decimal speedLeft = (Math.Abs(speed) * (100 + direction)) / 100.0m;
-
-            if (speedLeft > 100 || speedRight > 100)
+            //otocka na miste, dle zkoušek doplnit hodnoty
+            if (speed == 0 && Math.Abs(direction) == 100)
             {
-                var ratio = 100 / Math.Max(speedLeft, speedRight);
-
-                speedLeft = speedLeft * ratio;
-                speedRight = speedRight * ratio;
+                SpeedLeft = 0;
+                SpeedRight = 0;
             }
-          
-            SpeedLeft = mapToPowerRange(speedLeft);
-            SpeedRight = mapToPowerRange(speedRight);
-        }
-        public byte SpeedRight = 0;
-        public byte SpeedLeft = 0;
-        public byte OrientationRight = 0;
-        public byte OrientationLeft = 0;
+            //kontrola na zastaveni (skrze nasledne prepocty vykonu)
+            else if (speed == 0 && direction == 0)
+            {
+                SpeedLeft = 0;
+                SpeedRight = 0;
+            }
+            else
+            {
+                decimal speedRight = (Math.Abs(speed) * (100 - direction)) / 100.0m;
+                decimal speedLeft = (Math.Abs(speed) * (100 + direction)) / 100.0m;
 
+                if (speedLeft > 100 || speedRight > 100)
+                {
+                    var ratio = 100 / Math.Max(speedLeft, speedRight);
+                    speedLeft = speedLeft * ratio;
+                    speedRight = speedRight * ratio;
+                }
+                SpeedLeft = mapToPowerRange(speedLeft);
+                SpeedRight = mapToPowerRange(speedRight);
+            }
+        }
+
+      
         public byte[] ConvertToBytes()
         {
             return new byte[] { OrientationRight, SpeedRight, OrientationLeft, SpeedLeft };

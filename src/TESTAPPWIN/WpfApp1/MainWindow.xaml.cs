@@ -45,7 +45,7 @@ namespace WpfApp1
             dm.MotorsValuesChanged += (s, e) =>
             {
                 Debug.WriteLine($"dir: {e.OrientationLeft} left: {e.SpeedLeft} right: {e.SpeedRight}");
-                //connection.SendAPIMessage(0x05, new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF }, e.ConvertToBytes());
+                connection.SendAPIMessage(0x05, new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF }, e.ConvertToBytes());
             };
 
 
