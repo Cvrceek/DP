@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33815.320
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfApp1", "WpfApp1\WpfApp1.csproj", "{A0908097-BD70-4FC5-B29E-7A02AB6D2EFD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A20816C5-14DD-46C3-88CE-6812AA984740}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XBee.Custom", "XBeeCustom\XBee.Custom.csproj", "{50661B67-0158-4F41-9D36-3918834FA9D9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A0908097-BD70-4FC5-B29E-7A02AB6D2EFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0908097-BD70-4FC5-B29E-7A02AB6D2EFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0908097-BD70-4FC5-B29E-7A02AB6D2EFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0908097-BD70-4FC5-B29E-7A02AB6D2EFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50661B67-0158-4F41-9D36-3918834FA9D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50661B67-0158-4F41-9D36-3918834FA9D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50661B67-0158-4F41-9D36-3918834FA9D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50661B67-0158-4F41-9D36-3918834FA9D9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {869F0699-1758-43F1-A817-4F6C21409D7F}
+	EndGlobalSection
+EndGlobal
