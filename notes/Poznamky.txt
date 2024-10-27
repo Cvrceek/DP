@@ -1,0 +1,16 @@
+Uprava serva pro získávání 
+
+měření napětí - pomocí upravy skrz rezistory
+
+rpi 5 4gb
+
+využití 3d tisku
+
+
+prototyp "hydrauliky"
+
+
+
+
+
+Dotazník - doplnit otázky... 

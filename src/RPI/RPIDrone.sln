@@ -1,0 +1,45 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35208.52
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RPIDrone", "RPIDrone\RPIDrone.vcxproj", "{839D7D96-2DE7-4396-B425-4B359F5E969A}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "XBee.Custom", "Xbee.Custom\Xbee.Custom.vcxitems", "{0B1D3043-22DB-46C3-B7DD-0EC7121AF4D3}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Cytron.Custom", "Cytron.Custom\Cytron.Custom.vcxitems", "{C4A7AF31-BCD1-4430-8620-E94E4984423B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|ARM = Debug|ARM
+		Debug|ARM64 = Debug|ARM64
+		Release|ARM = Release|ARM
+		Release|ARM64 = Release|ARM64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{839D7D96-2DE7-4396-B425-4B359F5E969A}.Debug|ARM.ActiveCfg = Debug|ARM
+		{839D7D96-2DE7-4396-B425-4B359F5E969A}.Debug|ARM.Build.0 = Debug|ARM
+		{839D7D96-2DE7-4396-B425-4B359F5E969A}.Debug|ARM.Deploy.0 = Debug|ARM
+		{839D7D96-2DE7-4396-B425-4B359F5E969A}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{839D7D96-2DE7-4396-B425-4B359F5E969A}.Debug|ARM64.Build.0 = Debug|ARM64
+		{839D7D96-2DE7-4396-B425-4B359F5E969A}.Debug|ARM64.Deploy.0 = Debug|ARM64
+		{839D7D96-2DE7-4396-B425-4B359F5E969A}.Release|ARM.ActiveCfg = Release|ARM
+		{839D7D96-2DE7-4396-B425-4B359F5E969A}.Release|ARM.Build.0 = Release|ARM
+		{839D7D96-2DE7-4396-B425-4B359F5E969A}.Release|ARM.Deploy.0 = Release|ARM
+		{839D7D96-2DE7-4396-B425-4B359F5E969A}.Release|ARM64.ActiveCfg = Release|ARM64
+		{839D7D96-2DE7-4396-B425-4B359F5E969A}.Release|ARM64.Build.0 = Release|ARM64
+		{839D7D96-2DE7-4396-B425-4B359F5E969A}.Release|ARM64.Deploy.0 = Release|ARM64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {76F0A3D5-1E6C-4DC7-8E38-D0EF2F3E8012}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Xbee.Custom\Xbee.Custom.vcxitems*{0b1d3043-22db-46c3-b7dd-0ec7121af4d3}*SharedItemsImports = 9
+		Cytron.Custom\Cytron.Custom.vcxitems*{839d7d96-2de7-4396-b425-4b359f5e969a}*SharedItemsImports = 4
+		Xbee.Custom\Xbee.Custom.vcxitems*{839d7d96-2de7-4396-b425-4b359f5e969a}*SharedItemsImports = 4
+		Cytron.Custom\Cytron.Custom.vcxitems*{c4a7af31-bcd1-4430-8620-e94e4984423b}*SharedItemsImports = 9
+	EndGlobalSection
+EndGlobal
