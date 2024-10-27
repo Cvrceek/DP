@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Security.Permissions;
 using System.Text;
+using System.Windows.Documents;
 
 namespace WpfApp1
 {
@@ -14,29 +15,43 @@ namespace WpfApp1
         public MotorsValues() { }
         public MotorsValues(int speed, int direction)
         {
-            Orientation = (byte)(speed >= 0 ? 1 : 0);
-            
-            decimal speedRight = (Math.Abs(speed) * (100 - direction))/100.0m;
-            decimal speedLeft = (Math.Abs(speed) * (100 + direction))/100.0m;
+            //provotni nastaveni orientace, dle hodnoty rychlosti
+            OrientationRight = OrientationLeft = (byte)(speed >= 0 ? 1 : 0);
 
-            if(speedLeft > 100  || speedRight > 100)
+
+            decimal speedRight = (Math.Abs(speed) * (100 - direction)) / 100.0m;
+            decimal speedLeft = (Math.Abs(speed) * (100 + direction)) / 100.0m;
+
+            if (speedLeft > 100 || speedRight > 100)
             {
                 var ratio = 100 / Math.Max(speedLeft, speedRight);
 
                 speedLeft = speedLeft * ratio;
                 speedRight = speedRight * ratio;
             }
-
-            SpeedLeft = (byte)Math.Round(speedLeft);
-            SpeedRight = (byte)Math.Round(speedRight);
+          
+            SpeedLeft = mapToPowerRange(speedLeft);
+            SpeedRight = mapToPowerRange(speedRight);
         }
         public byte SpeedRight = 0;
         public byte SpeedLeft = 0;
-        public byte Orientation = 0;
+        public byte OrientationRight = 0;
+        public byte OrientationLeft = 0;
 
         public byte[] ConvertToBytes()
         {
-            return new byte[] { Orientation, SpeedRight, SpeedLeft };
+            return new byte[] { OrientationRight, SpeedRight, OrientationLeft, SpeedLeft };
+        }
+        /// <summary>
+        /// metoda pro prevod vypocitanych rychlosit, do pouzitelneho vykonu
+        /// motory potrebuji min vykon, aby byl proud dostatecny na otoceni
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="minPower"></param>
+        /// <returns></returns>
+        private byte mapToPowerRange(decimal value, int minPower = 15)
+        {
+            return (byte)Math.Round(value / 100 * (100 - minPower) + minPower); 
         }
     }
 
@@ -71,7 +86,7 @@ namespace WpfApp1
             gamePad.RightAxis_X_Changed += (s, e) =>
             {
                 direcitionX = e;
-                Debug.WriteLine("Right_X: " + e);
+                //Debug.WriteLine("Right_X: " + e);
 
                 MotorsValuesChanged?.Invoke(this, new MotorsValues(direcitionY, direcitionX));
 
@@ -81,7 +96,7 @@ namespace WpfApp1
             gamePad.LeftAxis_Y_Changed += (s, e) =>
             {
                 direcitionY = e;
-                Debug.WriteLine("Left_Y: " + e);
+                //Debug.WriteLine("Left_Y: " + e);
                 MotorsValuesChanged?.Invoke(this, new MotorsValues(direcitionY, direcitionX));
             };
 
@@ -89,14 +104,14 @@ namespace WpfApp1
             //aktuálně nezajímá
             gamePad.RightAxis_Y_Changed += (s, e) =>
             {
-                Debug.WriteLine("Right_Y: " + e);
+                //Debug.WriteLine("Right_Y: " + e);
                 //SendDataToContrib("Right_Y: " + e);
 
             };
 
             gamePad.LeftAxis_X_Changed += (s, e) =>
             {
-                Debug.WriteLine("Left_X: " + e);
+               // Debug.WriteLine("Left_X: " + e);
 
             };
             #endregion
