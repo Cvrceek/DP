@@ -73,7 +73,7 @@ namespace WpfApp1
             {
                 joystick.Poll();
                 CompareStatesAndInvokeEvents(new GamePadState(joystick.GetCurrentState()));
-                await Task.Delay(250);
+                await Task.Delay(100);
             }
         }
 

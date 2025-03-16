@@ -12,8 +12,7 @@ namespace XBee.Custom
     public class XBeeConnection
     {
         private XBeeSerialPort serialPort;
-        private string portName;
-        private int baudRate;
+    
         private const int _STARTDELIMITER_ = 0x7E;
         public XBeeConnection(string portName, int baudRate = 9600)
         {

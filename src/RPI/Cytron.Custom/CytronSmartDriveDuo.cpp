@@ -8,8 +8,7 @@
 /// <param name="m1_dir">pin dle wiringPI gpio</param>
 /// <param name="m2_pwm">pin dle wiringPI gpio</param>
 /// <param name="m2_dir">pin dle wiringPI gpio</param>
-CytronSmartDriveDuo::CytronSmartDriveDuo(int m1_pwm, int m1_dir, int m2_pwm, int m2_dir) : m1(m1_pwm, m1_dir), m2(m2_pwm, m2_dir) 
-{
+CytronSmartDriveDuo::CytronSmartDriveDuo(int m1_pwm, int m1_dir, int m2_pwm, int m2_dir) : m1(m1_pwm, m1_dir), m2(m2_pwm, m2_dir) {
 
 }
 

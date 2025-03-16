@@ -9,6 +9,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "XBee.Custom", "Xbee.Custom\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Cytron.Custom", "Cytron.Custom\Cytron.Custom.vcxitems", "{C4A7AF31-BCD1-4430-8620-E94E4984423B}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PCA9685", "PCA9685\PCA9685.vcxitems", "{A98E9346-F046-417C-840A-4AEA88C096E1}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ADS1115.Custom", "ADS1115.Custom\ADS1115.Custom.vcxitems", "{88DAA639-4899-4B67-AEAB-23433D1E6496}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM = Debug|ARM
@@ -38,8 +42,12 @@ Global
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Xbee.Custom\Xbee.Custom.vcxitems*{0b1d3043-22db-46c3-b7dd-0ec7121af4d3}*SharedItemsImports = 9
+		ADS1115.Custom\ADS1115.Custom.vcxitems*{839d7d96-2de7-4396-b425-4b359f5e969a}*SharedItemsImports = 4
 		Cytron.Custom\Cytron.Custom.vcxitems*{839d7d96-2de7-4396-b425-4b359f5e969a}*SharedItemsImports = 4
+		PCA9685\PCA9685.vcxitems*{839d7d96-2de7-4396-b425-4b359f5e969a}*SharedItemsImports = 4
 		Xbee.Custom\Xbee.Custom.vcxitems*{839d7d96-2de7-4396-b425-4b359f5e969a}*SharedItemsImports = 4
+		ADS1115.Custom\ADS1115.Custom.vcxitems*{88daa639-4899-4b67-aeab-23433d1e6496}*SharedItemsImports = 9
+		PCA9685\PCA9685.vcxitems*{a98e9346-f046-417c-840a-4aea88c096e1}*SharedItemsImports = 9
 		Cytron.Custom\Cytron.Custom.vcxitems*{c4a7af31-bcd1-4430-8620-e94e4984423b}*SharedItemsImports = 9
 	EndGlobalSection
 EndGlobal
