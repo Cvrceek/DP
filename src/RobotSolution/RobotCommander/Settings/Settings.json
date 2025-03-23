@@ -1,0 +1,10 @@
+﻿{
+  "Min_MotorsPower": 20,
+  "Max_MotorsPower": 80,
+  "Min_MainServo": 20,
+  "Max_MainServo": 80,
+  "Step_MainServo": 5,
+  "SerialPortName": "COM5",
+  "SerialPortBaudRate": 9600,
+  "CamID": "USB\\VID_1532&PID_0D05&MI_00\\7&1A05175A&0&0000"
+}
