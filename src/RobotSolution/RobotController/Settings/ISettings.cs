@@ -11,6 +11,13 @@
 
         string SH { get; set; }
         string SL { get; set; }
+
+        int PCA9685_BusID { get; set; }
+        int PCA9685_Address { get; set; }
+
+        int ADS1115_BusID { get; set; }
+        int ADS1115_Address { get; set; }
+        
         void Load();
         void Save();
     }

@@ -77,5 +77,16 @@ namespace RobotController.Settings
         public string SH { get; set; }
         public string SL { get; set; }
         #endregion
+
+        #region PCA9685
+        public int PCA9685_BusID { get; set; }
+        public int PCA9685_Address { get; set; }
+        #endregion
+
+        #region ADS1115
+        public int ADS1115_BusID { get; set; }
+        public int ADS1115_Address { get; set; }
+        #endregion
+
     }
 }

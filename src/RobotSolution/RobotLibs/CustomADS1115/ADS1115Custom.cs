@@ -13,9 +13,8 @@ namespace RobotLibs.CustomADS1115
         private readonly Ads1115 ads;
         private readonly int ads_conversionDelay = 8;
   
-        public ADS1115Custom(int i2cAddress = 0x48)
+        public ADS1115Custom(I2cDevice i2cDevice)
         {
-            var i2cDevice = I2cDevice.Create(new I2cConnectionSettings(1, i2cAddress));
             ads = new Ads1115(i2cDevice, InputMultiplexer.AIN0); 
             ads.MeasuringRange = MeasuringRange.FS6144; 
         }

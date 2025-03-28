@@ -6,6 +6,10 @@
   "M2_PWM_Pin": 27,
   "M2_DIR_Pin": 5,
   "SH": "0013A200",
-  "SL": "41FEB06B"
+  "SL": "41FEB06B",
+  "PCA9685_BusID": 1,
+  "PCA9685_Address": 64,
+  "ADS1115_BusID": 1,
+  "ADS1115_Address": 72
 }
 

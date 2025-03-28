@@ -4,6 +4,7 @@ using System.Device.Gpio;
 using System.IO;
 using Iot.Device.Amg88xx;
 using Iot.Device.Nmea0183;
+using Iot.Device.Pwm;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RobotController.Extensions;
@@ -31,8 +32,9 @@ internal class Program
 
         var sett = serviceProvider.GetRequiredService<ISettings>();
         var gpioController = serviceProvider.GetRequiredService<GpioController>();
+        var pca = serviceProvider.GetRequiredService<Pca9685>();
 
-        var motors = new CytronSmartDuoDrive(gpioController, sett.M1_PWM_Pin, sett.M1_DIR_Pin, sett.M2_PWM_Pin, sett.M2_DIR_Pin);
+        var motors = new CytronSmartDuoDrive(gpioController, pca, sett.M1_PWM_Pin, sett.M1_DIR_Pin, sett.M2_PWM_Pin, sett.M2_DIR_Pin);
         
         XBeeConnection connection = new XBeeConnection(sett.SerialPortName, sett.SL, sett.SH, sett.SerialPortBaudRate);
         connection.Open();

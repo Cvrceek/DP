@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 using Serilog.Extensions.Logging;
 using System.Device.Gpio;
 using RobotLibs.PCA9685;
+using Iot.Device.Pwm;
+using System.Device.I2c;
+using RobotLibs.CustomADS1115;
 
 namespace RobotController.Extensions
 {
@@ -38,7 +41,19 @@ namespace RobotController.Extensions
             services.AddLogging(builder => builder.AddProvider(new SerilogLoggerProvider(Log.Logger)));
             services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
             services.AddSingleton<GpioController>(_ => new GpioController(PinNumberingScheme.Logical));
-            services.AddSingleton<PCA9685>(_ => new PCA9685());
+            services.AddSingleton<Pca9685>(provider =>
+            {
+                var settings = provider.GetRequiredService<ISettings>();
+                var i2c = I2cDevice.Create(new I2cConnectionSettings(settings.PCA9685_BusID, settings.PCA9685_Address));
+                return new Pca9685(i2c, 50); 
+            });
+
+            services.AddSingleton<ADS1115Custom>(provider =>
+            {
+                var settings = provider.GetRequiredService<ISettings>();
+                var i2c = I2cDevice.Create(new I2cConnectionSettings(settings.ADS1115_BusID, settings.ADS1115_Address));
+                return new ADS1115Custom(i2c);
+            });
 
             return services;
         }
