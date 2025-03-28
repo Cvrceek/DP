@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RobotController.Extensions;
 using RobotController.Settings;
+using RobotLibs.Cytron;
 using RobotLibs.DTO;
 using RobotLibs.DTO.DTOModels;
 using RobotLibs.XbeeCustom;
@@ -28,15 +29,20 @@ internal class Program
         logger.LogInformation("Hello, World! - Logováno pomocí Serilog");
 
         var sett = serviceProvider.GetRequiredService<ISettings>();
+
+        var motors = new CytronSmartDuoDrive(sett.M1_PWM_Pin, sett.M1_DIR_Pin, sett.M2_PWM_Pin, sett.M2_DIR_Pin);
+        
         XBeeConnection connection = new XBeeConnection(sett.SerialPortName, sett.SL, sett.SH, sett.SerialPortBaudRate);
         connection.Open();
+
+
 
         connection.FrameReceived += async (s, e) =>
         {
             if (e.RFData[0] == (byte)EDTOType.MainMotorsValues)
             {
                 var values = MainMotorsValues.FromBytes(e.RFData.ToArray());
-                
+                motors.SetMotors(values.OrientationRight, values.OrientationLeft, values.SpeedRight, values.SpeedLeft);
                 
                 Console.WriteLine($"RFData\nOL:{values.OrientationLeft}  OR:{values.OrientationRight}  SL:{values.SpeedLeft}   SR:{values.SpeedRight}");
             }

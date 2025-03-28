@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -15,7 +16,8 @@ namespace RobotController.Settings
         {
         }
         #region Load/save
-        private static readonly string FilePath = Path.Combine(AppContext.BaseDirectory, "Settings", "Settings.json");
+        private static readonly string FilePath = Path.Combine(AppContext.BaseDirectory, "Settings",
+            RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "Settings_Win.json" : "Settings_Linux.json");
 
         public void Save()
         {

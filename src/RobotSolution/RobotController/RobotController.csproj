@@ -18,7 +18,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="Settings\Settings.json">
+    <None Remove="Settings\Settings_Linux.json" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(OS)' != 'Windows_NT'">
+    <Content Include="Settings\Settings_Linux.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    </ItemGroup>
+  <ItemGroup Condition="'$(OS)' == 'Windows_NT'">
+    <Content Include="Settings\Settings_Win.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
