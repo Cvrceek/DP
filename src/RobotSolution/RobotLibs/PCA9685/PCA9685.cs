@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace RobotLibs.PCA9685
 {
     //vychazi z implementace pro c++, viz old implementace
+    [Obsolete("Použít Pca9685 z Iot.Device.Pwm")]
     public class PCA9685
     {
         private const int MODE1 = 0x00;

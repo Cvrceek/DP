@@ -1,5 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using System;
+using System.Device.Gpio;
 using System.IO;
 using Iot.Device.Amg88xx;
 using Iot.Device.Nmea0183;
@@ -29,8 +30,9 @@ internal class Program
         logger.LogInformation("Hello, World! - Logováno pomocí Serilog");
 
         var sett = serviceProvider.GetRequiredService<ISettings>();
+        var gpioController = serviceProvider.GetRequiredService<GpioController>();
 
-        var motors = new CytronSmartDuoDrive(sett.M1_PWM_Pin, sett.M1_DIR_Pin, sett.M2_PWM_Pin, sett.M2_DIR_Pin);
+        var motors = new CytronSmartDuoDrive(gpioController, sett.M1_PWM_Pin, sett.M1_DIR_Pin, sett.M2_PWM_Pin, sett.M2_DIR_Pin);
         
         XBeeConnection connection = new XBeeConnection(sett.SerialPortName, sett.SL, sett.SH, sett.SerialPortBaudRate);
         connection.Open();

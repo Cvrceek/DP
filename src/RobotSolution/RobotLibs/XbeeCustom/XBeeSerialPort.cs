@@ -98,7 +98,7 @@ namespace RobotLibs.XbeeCustom
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Chyba při zpracování dat: {ex.Message}");
+                Console.WriteLine($"Chyba při zpracování dat: {ex.Message}");
             }
         }
         private byte CalculateChecksum(List<byte> frameData)

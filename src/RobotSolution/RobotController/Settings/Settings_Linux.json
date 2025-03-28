@@ -1,10 +1,10 @@
 ﻿{
   "SerialPortBaudRate": 9600,
-  "SerialPortName": "COM6",
-  "M1_PWM_Pin": 6,
-  "M1_DIR_Pin": 22,
-  "M2_PWM_Pin": 5,
-  "M2_DIR_Pin": 27,
+  "SerialPortName": "/dev/ttyUSB0",
+  "M1_PWM_Pin": 22,
+  "M1_DIR_Pin": 6,
+  "M2_PWM_Pin": 27,
+  "M2_DIR_Pin": 5,
   "SH": "0013A200",
   "SL": "41FEB06B"
 }

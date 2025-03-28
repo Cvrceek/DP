@@ -57,11 +57,11 @@ namespace RobotLibs.XbeeCustom
                 try
                 {
                     serialPort.Open();
-                    Debug.WriteLine("Port otevřen.");
+                    Console.WriteLine("Port otevřen.");
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine($"Chyba při otevírání portu: {e.Message}");
+                    Console.WriteLine($"Chyba při otevírání portu: {e.Message}");
                 }
             }
         }
@@ -72,7 +72,7 @@ namespace RobotLibs.XbeeCustom
             if (serialPort.IsOpen)
             {
                 serialPort.Close();
-                Debug.WriteLine("Port uzavřen.");
+                Console.WriteLine("Port uzavřen.");
             }
         }
 
@@ -155,16 +155,16 @@ namespace RobotLibs.XbeeCustom
                 try
                 {
                     serialPort.Write(frame.ToArray(), 0, frame.Count);
-                    Debug.WriteLine("API rámec odeslán.");
+                    Console.WriteLine("API rámec odeslán.");
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine($"Chyba při odesílání API rámce: {e.Message}");
+                    Console.WriteLine($"Chyba při odesílání API rámce: {e.Message}");
                 }
             }
             else
             {
-                Debug.WriteLine("Sériový port není otevřen.");
+                Console.WriteLine("Sériový port není otevřen.");
             }
         }
 
@@ -177,11 +177,11 @@ namespace RobotLibs.XbeeCustom
 
                 if (deliveryStatus == 0x00)
                 {
-                    Debug.WriteLine($"Zpráva s Frame ID {frameID} byla úspěšně doručena.");
+                    Console.WriteLine($"Zpráva s Frame ID {frameID} byla úspěšně doručena.");
                 }
                 else
                 {
-                    Debug.WriteLine($"Zpráva s Frame ID {frameID} nebyla doručena. Stav: {deliveryStatus:X2}");
+                    Console.WriteLine($"Zpráva s Frame ID {frameID} nebyla doručena. Stav: {deliveryStatus:X2}");
                 }
             }
         }
@@ -190,7 +190,7 @@ namespace RobotLibs.XbeeCustom
         {
             if (frameData == null || frameData.Length < 15)
             {
-                Debug.WriteLine("Neplatný rámec.");
+                Console.WriteLine("Neplatný rámec.");
                 return;
             }
 
@@ -208,11 +208,11 @@ namespace RobotLibs.XbeeCustom
 
                 // Zobrazíme přijatá data
                 string receivedMessage = Encoding.ASCII.GetString(rfData);
-                Debug.WriteLine($"Přijatá zpráva od {BitConverter.ToString(sourceAddress)}: {receivedMessage}");
+                Console.WriteLine($"Přijatá zpráva od {BitConverter.ToString(sourceAddress)}: {receivedMessage}");
             }
             else
             {
-                Debug.WriteLine("Přijatý rámec není RX (Receive Packet).");
+                Console.WriteLine("Přijatý rámec není RX (Receive Packet).");
             }
         }
     }

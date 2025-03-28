@@ -1,20 +1,21 @@
-﻿using System;
+﻿using Iot.Device.Pwm;
+using System;
 using System.Collections.Generic;
+using System.Device.Gpio;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace RobotLibs.Cytron
 {
-    public class CytronSmartDuoDrive : IDisposable
+    public class CytronSmartDuoDrive 
     {
         private readonly CytronSmartDrive m1;
         private readonly CytronSmartDrive m2;
-
-        public CytronSmartDuoDrive(int m1_pwm, int m1_dir, int m2_pwm, int m2_dir)
+        public CytronSmartDuoDrive(GpioController gpioController, Pca9685 pca9685, int m1_pwm, int m1_dir, int m2_pwm, int m2_dir)
         {
-            m1 = new CytronSmartDrive(m1_pwm, m1_dir);
-            m2 = new CytronSmartDrive(m2_pwm, m2_dir);
+            m1 = new CytronSmartDrive(gpioController, pca9685, m1_pwm, m1_dir);
+            m2 = new CytronSmartDrive(gpioController, pca9685, m2_pwm, m2_dir);
         }
         public void SetMotors(int m1_direction, int m2_direction, int m1_speed, int m2_speed)
         {
@@ -30,10 +31,6 @@ namespace RobotLibs.Cytron
                 m2.SetMotor(m2_speed);
             }
         }
-        public void Dispose()
-        {
-            m1.Dispose();
-            m2.Dispose();
-        }
+      
     }
 }

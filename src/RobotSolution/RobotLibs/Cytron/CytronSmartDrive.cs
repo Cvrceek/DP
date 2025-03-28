@@ -5,32 +5,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Device.Pwm;
+using System.Device.Pwm.Drivers;
+using RobotLibs.Helpers;
+using Iot.Device.Pwm;
+using UnitsNet;
 
 namespace RobotLibs.Cytron
 {
-    public class CytronSmartDrive : IDisposable
+    public class CytronSmartDrive 
     {
         private readonly int pinPWM;
         private readonly int pinDIR;
         private readonly GpioController gpio;
-        private readonly PwmChannel pwmChannel;
+        private Pca9685 pca9685;
 
-        /// <summary>
-        /// Konstruktor pro motor driver CytronSmartDrive.
-        /// </summary>
-        /// <param name="pwm">GPIO pin pro PWM</param>
-        /// <param name="dir">GPIO pin pro směr</param>
-        public CytronSmartDrive(int pwm, int dir)
+        public CytronSmartDrive(GpioController gpioController, Pca9685 pca9685, int pwm, int dir)
         {
             pinPWM = pwm;
             pinDIR = dir;
-            gpio = new GpioController();
+            gpio = gpioController;
+            this.pca9685 = pca9685;
 
             gpio.OpenPin(pinDIR, PinMode.Output);
-            gpio.Write(pinDIR, PinValue.High); 
-
-            pwmChannel = PwmChannel.Create(0, pinPWM, 100, 0);
-            pwmChannel.Start();
+            gpio.Write(pinDIR, PinValue.High);
         }
 
         public void SetMotor(int speed)
@@ -38,27 +35,19 @@ namespace RobotLibs.Cytron
             if (speed >= 0)
             {
                 gpio.Write(pinDIR, PinValue.High);
-                pwmChannel.DutyCycle = speed / 100.0;
+                pca9685.SetDutyCycle(pinPWM, speed / 100);
             }
             else
             {
                 gpio.Write(pinDIR, PinValue.Low);
-                pwmChannel.DutyCycle = -speed / 100.0;
+                pca9685.SetDutyCycle(pinPWM, speed / 100);
             }
         }
-
         public void StopMotor()
         {
             gpio.Write(pinDIR, PinValue.High);
-            pwmChannel.DutyCycle = 0;
-        }
+            pca9685.SetDutyCycle(pinPWM, 0);
 
-        public void Dispose()
-        {
-            pwmChannel.Stop();
-            pwmChannel.Dispose();
-            gpio.ClosePin(pinDIR);
-            gpio.Dispose();
         }
     }
 }

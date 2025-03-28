@@ -10,6 +10,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Serilog.Extensions.Logging;
+using System.Device.Gpio;
+using RobotLibs.PCA9685;
 
 namespace RobotController.Extensions
 {
@@ -35,6 +37,8 @@ namespace RobotController.Extensions
 
             services.AddLogging(builder => builder.AddProvider(new SerilogLoggerProvider(Log.Logger)));
             services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
+            services.AddSingleton<GpioController>(_ => new GpioController(PinNumberingScheme.Logical));
+            services.AddSingleton<PCA9685>(_ => new PCA9685());
 
             return services;
         }
