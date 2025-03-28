@@ -9,7 +9,7 @@ namespace RobotCommander.Inputs
     /// <summary>
     /// Předchystaná třída pro budoucí rozvoj
     /// </summary>
-    public class CustomInputDevice : IRobotCommanderInput
+    public class CustomInputDevice : IInputDevice
     {
         public event EventHandler<int> SpeedChanged;
         public event EventHandler<int> DirectionChanged;
@@ -20,5 +20,7 @@ namespace RobotCommander.Inputs
         public event EventHandler<bool> LightsChanged;
         public event EventHandler<bool> BeaconChanged;
         public event EventHandler<bool> HornChanged;
+
+        public void Run() { }
     }
 }

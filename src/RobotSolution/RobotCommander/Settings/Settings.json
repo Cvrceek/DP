@@ -6,5 +6,7 @@
   "Step_MainServo": 5,
   "SerialPortName": "COM5",
   "SerialPortBaudRate": 9600,
-  "CamID": "USB\\VID_1532&PID_0D05&MI_00\\7&1A05175A&0&0000"
+  "CamID": "USB\\VID_1532&PID_0D05&MI_00\\7&1A05175A&0&0000",
+  "SH": "0013A200",
+  "SL": "41FEB270"
 }

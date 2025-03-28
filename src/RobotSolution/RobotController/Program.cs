@@ -1,11 +1,14 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using System;
 using System.IO;
+using Iot.Device.Amg88xx;
 using Iot.Device.Nmea0183;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RobotController.Extensions;
 using RobotController.Settings;
+using RobotLibs.DTO;
+using RobotLibs.DTO.DTOModels;
 using RobotLibs.XbeeCustom;
 using Serilog;
 using Serilog.Extensions.Logging;
@@ -25,10 +28,23 @@ internal class Program
         logger.LogInformation("Hello, World! - Logováno pomocí Serilog");
 
         var sett = serviceProvider.GetRequiredService<ISettings>();
-        XBeeConnection connection = new XBeeConnection(sett.SerialPortName, sett.SerialPortBaudRate);
+        XBeeConnection connection = new XBeeConnection(sett.SerialPortName, sett.SL, sett.SH, sett.SerialPortBaudRate);
         connection.Open();
 
-        _ = Task.Run(() => connection.StartListening());
+        connection.FrameReceived += async (s, e) =>
+        {
+            if (e.RFData[0] == (byte)EDTOType.MainMotorsValues)
+            {
+                var values = MainMotorsValues.FromBytes(e.RFData.ToArray());
+                
+                
+                Console.WriteLine($"RFData\nOL:{values.OrientationLeft}  OR:{values.OrientationRight}  SL:{values.SpeedLeft}   SR:{values.SpeedRight}");
+            }
+            else
+            {
+
+            }
+        };
 
 
         await Task.Delay(Timeout.Infinite);

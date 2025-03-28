@@ -62,5 +62,18 @@ namespace RobotController.Settings
         public string SerialPortName { get; set; }
         public int SerialPortBaudRate { get; set; }
         #endregion
+
+        #region MainMotors
+        public int M1_PWM_Pin { get; set; }
+        public int M1_DIR_Pin { get; set; }
+        public int M2_PWM_Pin { get; set; }
+        public int M2_DIR_Pin { get; set; }
+
+        #endregion
+
+        #region RemoteXbee
+        public string SH { get; set; }
+        public string SL { get; set; }
+        #endregion
     }
 }

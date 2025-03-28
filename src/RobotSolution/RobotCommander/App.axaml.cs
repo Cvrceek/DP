@@ -3,7 +3,6 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using RobotCommander.Comand;
 using RobotCommander.Extensions;
 using RobotCommander.Settings;
 using Serilog;
@@ -31,8 +30,6 @@ namespace RobotCommander
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddRobotCommanderServices();
             Services = serviceCollection.BuildServiceProvider();
-
-            GamePad gp = new GamePad();
 
 
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)

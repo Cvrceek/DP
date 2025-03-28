@@ -10,10 +10,8 @@ namespace RobotLibs.XbeeCustom
 {
     public class XBeeSerialPort : SerialPort
     {
-        public event EventHandler<byte[]> XBeeDataReceived;
-
+        public event EventHandler<XbeeFrame> XBeeDataReceived;
         private List<byte> dataStack = new List<byte>();
-
         public XBeeSerialPort(string portName, int boudRate = 9600, int dataBits = 8, Parity parity = Parity.None, StopBits stopBits = StopBits.One, Handshake handshake = Handshake.None) : base(portName, boudRate)
         {
             DataBits = dataBits;
@@ -24,7 +22,6 @@ namespace RobotLibs.XbeeCustom
             SetupEventsHandlers();
         }
 
-
         private void SetupEventsHandlers()
         {
             DataReceived += this.OnDataReceived;
@@ -34,7 +31,6 @@ namespace RobotLibs.XbeeCustom
         {
             try
             {
-
                 byte[] buffer = new byte[this.BytesToRead];
                 this.Read(buffer, 0, buffer.Length);
 
@@ -46,20 +42,16 @@ namespace RobotLibs.XbeeCustom
                     int startIndex = dataStack.IndexOf(0x7E);
                     if (startIndex == -1)
                     {
-
                         return;
                     }
-
 
                     if (startIndex > 0)
                     {
                         dataStack.RemoveRange(0, startIndex);
                     }
 
-
                     if (dataStack.Count < 3)
                     {
-
                         return;
                     }
 
@@ -68,36 +60,39 @@ namespace RobotLibs.XbeeCustom
                     byte lengthLSB = dataStack[2];
                     int length = lengthMSB << 8 | lengthLSB;
 
-
-                    if (dataStack.Count < length + 3 + 1)
+                    if (dataStack.Count < length + 4)
                     {
-
                         return;
                     }
 
 
-                    byte[] frameData = new byte[length];
-                    for (int i = 0; i < length; i++)
-                    {
-                        frameData[i] = dataStack[i + 3];
-                    }
+                    List<byte> frameData = dataStack.Skip(3).Take(length).ToList();
+                  
 
 
                     byte checksum = dataStack[length + 3];
 
                     if (checksum != CalculateChecksum(frameData))
                     {
-                        Debug.WriteLine("Chybný kontrolní součet.");
+                        Console.WriteLine("Chybný kontrolní součet.");
                         dataStack.RemoveRange(0, length + 4);
                         continue;
                     }
+               
+                    var frame = new XbeeFrame
+                    {
+                        StartDelimiter = dataStack[0],
+                        MSB = dataStack[1],
+                        LSB = dataStack[2],
+                        Length = length,
+                        Data = frameData,
+                        FrameType = dataStack[3],
+                        Checksum = dataStack[3 + length]
+                    };
 
-                    XBeeDataReceived?.Invoke(this, frameData);
-#if DEBUG
-                    Debug.WriteLine($"Přijatý API rámec: {BitConverter.ToString(frameData)}");
-                    Debug.WriteLine($"Data: {Encoding.ASCII.GetString(frameData, 5, frameData.Length - 5)}");
-#endif
+                    XBeeDataReceived?.Invoke(this, frame);
 
+                    
                     dataStack.RemoveRange(0, length + 4);
                 }
             }
@@ -105,10 +100,8 @@ namespace RobotLibs.XbeeCustom
             {
                 Debug.WriteLine($"Chyba při zpracování dat: {ex.Message}");
             }
-
-
         }
-        private byte CalculateChecksum(byte[] frameData)
+        private byte CalculateChecksum(List<byte> frameData)
         {
             int sum = 0;
             foreach (byte b in frameData)

@@ -1,7 +1,9 @@
 using Avalonia.Controls;
 using Microsoft.Extensions.DependencyInjection;
+using RobotCommander.Inputs;
 using RobotCommander.Settings;
 using RobotLibs.XbeeCustom;
+using System.Threading.Tasks;
 
 namespace RobotCommander
 {
@@ -12,11 +14,10 @@ namespace RobotCommander
         public MainWindow()
         {
             InitializeComponent();
-            var settings = App.Services.GetService<ISettings>();
           
+            InputsCommandTransmitter transmitter = new InputsCommandTransmitter();
+   
 
-            connection = new XBeeConnection(settings.SerialPortName, settings.SerialPortBaudRate);
-            connection.Open();
         }
     }
 }

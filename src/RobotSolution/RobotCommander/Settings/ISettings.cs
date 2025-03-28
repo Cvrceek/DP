@@ -10,7 +10,8 @@
         int SerialPortBaudRate { get; set; }
         string SerialPortName { get; set; }
         int Step_MainServo { get; set; }
-
+        string SH { get; set; }
+        string SL { get; set; }
         void Load();
         void Save();
     }

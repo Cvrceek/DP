@@ -76,5 +76,10 @@ namespace RobotCommander.Settings
 
         public string CamID { get; set; }
 
+        #region RemoteXbee
+        public string SH { get; set; }
+        public string SL { get; set; }
+        #endregion
+
     }
 }

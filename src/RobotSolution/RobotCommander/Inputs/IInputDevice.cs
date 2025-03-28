@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RobotCommander.Inputs
 {
-    public interface IRobotCommanderInput
+    public interface IInputDevice
     {
         event EventHandler<int> SpeedChanged;
         event EventHandler<int> DirectionChanged;
@@ -20,6 +20,8 @@ namespace RobotCommander.Inputs
         event EventHandler<bool> LightsChanged;
         event EventHandler<bool> BeaconChanged;
         event EventHandler<bool> HornChanged;
+
+        public void Run();
 
     }
 }

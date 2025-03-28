@@ -7,11 +7,13 @@ using System.Threading.Tasks;
 using static SDL2.SDL;
 using SDL2;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace RobotCommander.Inputs
 {
-    public class GamePad : IRobotCommanderInput
+    public class GamePad : IInputDevice
     {
         #region Events
         public event EventHandler<int> SpeedChanged;
@@ -31,6 +33,7 @@ namespace RobotCommander.Inputs
         private bool beacon;
         private int externalSpeed;
 
+        private nint controller;
 
         State oldState;
         public GamePad()
@@ -42,7 +45,7 @@ namespace RobotCommander.Inputs
                 return;
             }
 
-            nint controller = 0;
+            controller = 0;
             for (int i = 0; i < SDL_NumJoysticks(); ++i)
             {
                 if (SDL_IsGameController(i) == SDL_bool.SDL_TRUE)
@@ -59,10 +62,11 @@ namespace RobotCommander.Inputs
                     }
                 }
             }
+        }
 
-       
 
-
+        public void Run()
+        {
             SDL_Event e;
             bool quit = false;
             while (!quit)
@@ -77,13 +81,12 @@ namespace RobotCommander.Inputs
 
                 InvokeEvents(new(controller));
 
-                SDL_Delay(10);
+                SDL_Delay(100);
             }
 
             SDL_GameControllerClose(controller);
             SDL_Quit();
         }
-
 
         private void InvokeEvents(State newState)
         {
@@ -127,6 +130,8 @@ namespace RobotCommander.Inputs
             public bool Horn;
             
             private float maxValue = 32767.0f;
+            private int deadZone = 10;
+
 
             public State() { }
             public State(nint controller)
@@ -134,18 +139,27 @@ namespace RobotCommander.Inputs
 
                 Speed = NormalizeValue(SDL_GameControllerGetAxis(controller, SDL_GameControllerAxis.SDL_CONTROLLER_AXIS_LEFTY)) * -1;
                 Direction = NormalizeValue(SDL_GameControllerGetAxis(controller, SDL_GameControllerAxis.SDL_CONTROLLER_AXIS_RIGHTX));
-#if DEBUG
+
                 Debug.WriteLine($"Speed: {Speed}\tDirection: {Direction}");
-#endif
+
             }
             /// <summary>
             /// Převede hodnoty na -100 <> 100
             /// </summary>
             /// <param name="value"></param>
             /// <returns></returns>
-            private int NormalizeValue(float value)
+            private int NormalizeValue(float value, bool useDeadZone = true)
             {
-                return (int)Math.Ceiling((value / maxValue) * 100);
+                var result = (int)Math.Ceiling((value / maxValue) * 100);
+                return useDeadZone ? DeadZone(result) : result;
+            }
+
+            private int DeadZone(int value)
+            {
+                if (Math.Abs(value) < deadZone)
+                    return 0;
+                else
+                    return value;
             }
         }
     }
