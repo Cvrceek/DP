@@ -19,16 +19,24 @@ namespace RobotLibs.Cytron
         }
         public void SetMotors(int m1_direction, int m2_direction, int m1_speed, int m2_speed)
         {
+
+
             // Kvůli bugu na driveru je nutné jednu hodnotu vždy invertovat
             if (m1_direction == 0 && m2_direction == 0)
             {
-                m1.SetMotor(m1_speed);
-                m2.SetMotor(-m2_speed);
+                m1.SetMotor(m1_speed, 1);
+                m2.SetMotor(m2_speed, m1_direction);
             }
             else if (m1_direction == 1 && m2_direction == 1)
             {
-                m1.SetMotor(-m1_speed);
-                m2.SetMotor(m2_speed);
+                m1.SetMotor(m1_speed, 0);
+                m2.SetMotor(m2_speed, m1_direction);
+            }
+            //možná nutné upravit na rozudílnost, když jsou direction rozudílné, tak dát pak stejné...
+            else
+            {
+                m1.SetMotor(m1_speed, 0);
+                m2.SetMotor(m2_speed, 0);
             }
         }
       

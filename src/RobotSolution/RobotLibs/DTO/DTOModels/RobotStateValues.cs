@@ -8,7 +8,13 @@ namespace RobotLibs.DTO.DTOModels
 {
     public class RobotStateValues : IDTOModel<RobotStateValues>
     {
-        public EDTOType EDTOType => throw new NotImplementedException();
+        public EDTOType EDTOType
+        {
+            get { return EDTOType.RobotStateValues; }
+        }
+
+        public int BatteryVoltage { get; set; }
+        public int HolderServoVoltage { get; set; }
 
         public static RobotStateValues FromBytes(byte[] data)
         {

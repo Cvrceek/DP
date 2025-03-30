@@ -18,10 +18,6 @@ namespace RobotLibs.CustomADS1115
             ads = new Ads1115(i2cDevice, InputMultiplexer.AIN0); 
             ads.MeasuringRange = MeasuringRange.FS6144; 
         }
-        public bool CheckADS1115()
-        {
-            return ads != null;
-        }
 
         public void SetGain(MeasuringRange range)
         {

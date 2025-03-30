@@ -40,12 +40,13 @@ namespace RobotController.Extensions
 
             services.AddLogging(builder => builder.AddProvider(new SerilogLoggerProvider(Log.Logger)));
             services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
-            services.AddSingleton<GpioController>(_ => new GpioController(PinNumberingScheme.Logical));
+            services.AddSingleton<GpioController>(_ => new GpioController());
             services.AddSingleton<Pca9685>(provider =>
             {
                 var settings = provider.GetRequiredService<ISettings>();
                 var i2c = I2cDevice.Create(new I2cConnectionSettings(settings.PCA9685_BusID, settings.PCA9685_Address));
-                return new Pca9685(i2c, 50); 
+                var pca = new Pca9685(i2c, 50);
+                return pca; 
             });
 
             services.AddSingleton<ADS1115Custom>(provider =>

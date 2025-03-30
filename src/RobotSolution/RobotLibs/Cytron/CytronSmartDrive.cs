@@ -17,7 +17,7 @@ namespace RobotLibs.Cytron
         private readonly int pinPWM;
         private readonly int pinDIR;
         private readonly GpioController gpio;
-        private Pca9685 pca9685;
+        private readonly Pca9685 pca9685;
 
         public CytronSmartDrive(GpioController gpioController, Pca9685 pca9685, int pwm, int dir)
         {
@@ -27,27 +27,28 @@ namespace RobotLibs.Cytron
             this.pca9685 = pca9685;
 
             gpio.OpenPin(pinDIR, PinMode.Output);
-            gpio.Write(pinDIR, PinValue.High);
         }
 
-        public void SetMotor(int speed)
+        public void SetMotor(int speed, int direction)
         {
-            if (speed >= 0)
+            try
             {
-                gpio.Write(pinDIR, PinValue.High);
-                pca9685.SetDutyCycle(pinPWM, speed / 100);
+                gpio.Write(pinDIR, direction == 0 ? PinValue.Low : PinValue.High);
+                pca9685.SetDutyCycle(pinPWM, speed / 100.0);
+
+                var xx = gpio.Read(pinDIR);
+                Console.WriteLine($"speed: {speed}   dir: {direction}     PINVALUE: {xx.ToString()}");
+
             }
-            else
+            catch(Exception ex)
             {
-                gpio.Write(pinDIR, PinValue.Low);
-                pca9685.SetDutyCycle(pinPWM, speed / 100);
+                Console.WriteLine(ex.Message + System.Environment.NewLine + System.Environment.NewLine + ex.StackTrace);
             }
         }
         public void StopMotor()
         {
             gpio.Write(pinDIR, PinValue.High);
             pca9685.SetDutyCycle(pinPWM, 0);
-
         }
     }
 }

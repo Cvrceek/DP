@@ -8,16 +8,30 @@ namespace RobotLibs.DTO.DTOModels
 {
     public class ExternalDeviceMotorValues : IDTOModel<ExternalDeviceMotorValues>
     {
-        public EDTOType EDTOType => throw new NotImplementedException();
+        //1+1+4= 6bytes
+        public EDTOType EDTOType
+        { 
+            get { return EDTOType.ExternalDeviceMotorValues; } 
+        }
 
+        public int Speed = 0;
+        public byte Orientation = 0;
         public static ExternalDeviceMotorValues FromBytes(byte[] data)
         {
-            throw new NotImplementedException();
+            return new ExternalDeviceMotorValues
+            {
+                Speed = BitConverter.ToInt32(data, 1),
+                Orientation = data[5]
+            };
         }
 
         public byte[] ToBytes()
         {
-            throw new NotImplementedException();
+            var bytes = new List<byte>();
+            bytes.Add((byte)EDTOType);
+            bytes.AddRange(BitConverter.GetBytes(Speed));
+            bytes.Add(Orientation);
+            return bytes.ToArray();
         }
     }
 }
