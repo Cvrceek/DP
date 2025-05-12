@@ -1,9 +1,25 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="RobotCommander.MainWindow"
-        Title="RobotCommander">
-    Welcome to Avalonia!
+        SystemDecorations="None"
+        CanResize="False"
+        Background="Red">
+  
+
+<Grid>
+  <Image x:Name="_FPVImageView"
+       HorizontalAlignment="Center"
+       VerticalAlignment="Center"
+       Stretch="UniformToFill"/>
+  
+      <StackPanel Orientation="Vertical"
+                    VerticalAlignment="Bottom"
+                    HorizontalAlignment="Left"
+                    Margin="20"
+                    Background="#80000080">
+            <TextBlock Text="Baterie: 92%" Foreground="White" FontSize="20"/>
+            <TextBlock Text="Motory: L 45%, R 50%" Foreground="White" FontSize="16"/>
+            <TextBlock Text="Signál: OK" Foreground="White" FontSize="16"/>
+        </StackPanel>
+</Grid>
 </Window>
