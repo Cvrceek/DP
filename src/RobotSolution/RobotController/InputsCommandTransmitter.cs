@@ -1,7 +1,6 @@
 ﻿using Iot.Device.Pwm;
 using Microsoft.Extensions.DependencyInjection;
 using RobotController.Settings;
-using RobotLibs.Cytron;
 using RobotLibs.DTO.DTOModels;
 using RobotLibs.DTO;
 using RobotLibs.XbeeCustom;
@@ -11,6 +10,7 @@ using System.Device.Gpio;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RobotController.Cytron;
 
 namespace RobotController
 {
@@ -33,7 +33,6 @@ namespace RobotController
             xBeeConnection = App.ServiceProvider.GetService<XBeeConnection>();
 
             gpioController.OpenPin(settings.LedRampRele_Pin, PinMode.Output);
-
         }
 
         public void SetEvents()

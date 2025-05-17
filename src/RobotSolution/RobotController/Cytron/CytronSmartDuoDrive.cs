@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RobotLibs.Cytron
+namespace RobotController.Cytron
 {
     public class CytronSmartDuoDrive 
     {

@@ -10,7 +10,7 @@ using RobotLibs.Helpers;
 using Iot.Device.Pwm;
 using UnitsNet;
 
-namespace RobotLibs.Cytron
+namespace RobotController.Cytron
 {
     public class CytronSmartDrive 
     {

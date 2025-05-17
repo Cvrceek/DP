@@ -1,17 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
-using System.Device.Gpio;
-using Iot.Device.Pwm;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using RobotController;
 using RobotController.Extensions;
-using RobotController.Settings;
-using RobotLibs.CustomADS1115;
-using RobotLibs.Cytron;
-using RobotLibs.DTO;
-using RobotLibs.DTO.DTOModels;
-using RobotLibs.XbeeCustom;
-
 
 
 internal class Program

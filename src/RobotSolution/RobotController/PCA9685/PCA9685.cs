@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RobotLibs.PCA9685
+namespace RobotController.PCA9685
 {
     //vychazi z implementace pro c++, viz old implementace
     [Obsolete("Použít Pca9685 z Iot.Device.Pwm")]
