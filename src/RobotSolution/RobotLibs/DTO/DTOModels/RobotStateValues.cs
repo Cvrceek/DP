@@ -13,7 +13,7 @@ namespace RobotLibs.DTO.DTOModels
             get { return EDTOType.RobotStateValues; }
         }
 
-        public int BatteryVoltage { get; set; }
+        public double BatteryVoltage { get; set; }
         public int HolderServoVoltage { get; set; }
 
         public static RobotStateValues FromBytes(byte[] data)

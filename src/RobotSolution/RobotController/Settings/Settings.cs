@@ -88,5 +88,18 @@ namespace RobotController.Settings
         public int ADS1115_Address { get; set; }
         #endregion
 
+        #region ExternalMotor
+        public int ExM_PWM_Pin { get; set; }
+        public int ExM_DIR_Pin { get; set; }
+        #endregion
+
+        public int ExternalHolderServo_PWM_Pin { get; set; }
+        public int ExternalDevice_PWM_Pin1 { get; set; }
+        public int ExternalDevice_PWM_Pin2 { get; set; }
+
+        public int LedRampRele_Pin { get; set; }
+
+        public int ADS_Battery_Pin { get; set; }
+
     }
 }

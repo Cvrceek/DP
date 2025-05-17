@@ -11,6 +11,11 @@ namespace RobotLibs.DTO
         MainMotorsValues = 1,
         ExternalDeviceHolderValues = 2,
         ExternalDeviceMotorValues = 3,
-        RobotStateValues = 4
+        RobotStateValues = 4,
+        ExternalDevicePWM1 = 5,
+        ExternalDevicePWM2 = 6,
+        LedRamp = 7,
+        Horn = 8,
+        Beacon = 9
     }
 }

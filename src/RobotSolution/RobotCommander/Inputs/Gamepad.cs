@@ -27,11 +27,11 @@ namespace RobotCommander.Inputs
         public event EventHandler<bool> HornChanged;
         #endregion
 
-        private int holderPositon;
-        private bool lights;
-        private bool horn;
-        private bool beacon;
-        private int externalSpeed;
+        private int holderPositon = 50;
+        private bool lights = false;
+        private bool horn = false;
+        private bool beacon = false;
+        private int externalSpeed = 0;
 
         private nint controller;
 
@@ -95,20 +95,75 @@ namespace RobotCommander.Inputs
             if (oldState.Direction != newState.Direction)
                 DirectionChanged?.Invoke(this, newState.Direction);
 
-            if (oldState.ExternalDeviceSpeed != newState.ExternalDeviceSpeed)
-                ExternalDeviceSpeedChanged?.Invoke(this, newState.ExternalDeviceSpeed);
-            if (oldState.ExternalDevicePWM1 != newState.ExternalDevicePWM1)
-                ExternalDevicePWM1Changed?.Invoke(this, newState.ExternalDevicePWM1);
-            if (oldState.ExternalDevicePWM2 != newState.ExternalDevicePWM2)
-                ExternalDevicePWM2Changed?.Invoke(this, newState.ExternalDevicePWM2);
-            if (oldState.ExternalDeviceHolderPosition != newState.ExternalDeviceHolderPosition)
-                ExternalDeviceHolderPositionChanged?.Invoke(this, newState.ExternalDeviceHolderPosition);
-            if (oldState.Lights != newState.Lights)
-                LightsChanged?.Invoke(this, newState.Lights);
-            if (oldState.Beacon != newState.Beacon)
-                BeaconChanged?.Invoke(this, newState.Beacon);
-            if (oldState.Horn != newState.Horn)
-                HornChanged?.Invoke(this, newState.Horn);
+            if (oldState.DPad_UP != newState.DPad_UP)
+            {
+                if (newState.DPad_UP && holderPositon < 100)
+                {
+                    holderPositon += 10;
+                    ExternalDeviceHolderPositionChanged?.Invoke(this, holderPositon);
+                }
+            }
+
+            if (oldState.DPad_DOWN != newState.DPad_DOWN)
+            {
+                if (newState.DPad_DOWN && holderPositon > 0)
+                {
+                    holderPositon -= 10;
+                    ExternalDeviceHolderPositionChanged?.Invoke(this, holderPositon);
+                }
+            }
+
+            //trojuhelnik   SDL_CONTROLLER_BUTTON_Y
+            //kolecko  	SDL_CONTROLLER_BUTTON_B
+            //ctverecek   	SDL_CONTROLLER_BUTTON_X
+            //krizek  SDL_CONTROLLER_BUTTON_A
+
+            if (oldState.Btn_Y != newState.Btn_Y)
+            {
+                if (newState.Btn_Y && externalSpeed < 100)
+                {
+                    externalSpeed += 10;
+                    ExternalDeviceSpeedChanged?.Invoke(this, externalSpeed);
+                }
+            }
+
+            if (oldState.Btn_A != newState.Btn_A)
+            {
+                if (newState.Btn_A && externalSpeed > 0)
+                {
+                    externalSpeed -= 10;
+                    ExternalDeviceSpeedChanged?.Invoke(this, externalSpeed);
+                }
+            }
+
+            if (oldState.Btn_B != newState.Btn_B)
+            {
+                if (newState.Btn_B)
+                    ExternalDevicePWM1Changed?.Invoke(this, 80);
+                else
+                    ExternalDevicePWM1Changed?.Invoke(this, 0);
+            }
+
+            if (oldState.Btn_X != newState.Btn_X)
+            {
+                if (newState.Btn_X)
+                {
+                    if (newState.Btn_B)
+                        ExternalDevicePWM1Changed?.Invoke(this, 20);
+                    else
+                        ExternalDevicePWM1Changed?.Invoke(this, 0);
+                }
+            }
+
+
+            if (oldState.Btn_R != newState.Btn_R)
+            {
+                if (newState.Btn_R)
+                {
+                    lights = !lights;
+                    LightsChanged?.Invoke(this, lights);
+                }
+            }
 
             oldState = newState;
         }
@@ -121,27 +176,67 @@ namespace RobotCommander.Inputs
         {
             public int Speed;
             public int Direction;
-            public int ExternalDeviceSpeed;
-            public int ExternalDevicePWM1;
-            public int ExternalDevicePWM2;
-            public int ExternalDeviceHolderPosition;
-            public bool Lights;
-            public bool Beacon;
-            public bool Horn;
-            
+
+            public bool DPad_UP;
+            public bool DPad_DOWN;
+            public bool DPad_RIGHT;
+            public bool DPad_LEFT;
+
+            public bool Btn_Y;
+            public bool Btn_X;
+            public bool Btn_A;
+            public bool Btn_B;
+
+
+            public int TriggerRight;
+            public int TriggerLeft;
+
+            public bool Btn_R;
+            public bool Btn_L;
+
+           
             private float maxValue = 32767.0f;
             private int deadZone = 10;
 
 
             public State() { }
+            //trojuhelnik   SDL_CONTROLLER_BUTTON_Y
+            //kolecko  	SDL_CONTROLLER_BUTTON_B
+            //ctverecek   	SDL_CONTROLLER_BUTTON_X
+            //krizek  SDL_CONTROLLER_BUTTON_A
+
+            //D - Pad Nahoru SDL_CONTROLLER_BUTTON_DPAD_UP
+            //D - Pad Dolů SDL_CONTROLLER_BUTTON_DPAD_DOWN
+            //D - Pad Vlevo SDL_CONTROLLER_BUTTON_DPAD_LEFT
+            //D - Pad Vpravo SDL_CONTROLLER_BUTTON_DPAD_RIGHT
+
+            //L2(analog) SDL_CONTROLLER_AXIS_TRIGGERLEFT 
+            //R2(analog) SDL_CONTROLLER_AXIS_TRIGGERRIGHT
+
+            //L3(stick klik) SDL_CONTROLLER_BUTTON_LEFTSTICK
+            //R3(stick klik) SDL_CONTROLLER_BUTTON_RIGHTSTICK
             public State(nint controller)
             {
 
                 Speed = NormalizeValue(SDL_GameControllerGetAxis(controller, SDL_GameControllerAxis.SDL_CONTROLLER_AXIS_LEFTY)) * -1;
                 Direction = NormalizeValue(SDL_GameControllerGetAxis(controller, SDL_GameControllerAxis.SDL_CONTROLLER_AXIS_RIGHTX));
 
-                Debug.WriteLine($"Speed: {Speed}\tDirection: {Direction}");
 
+                DPad_UP = SDL_GameControllerGetButton(controller, SDL_GameControllerButton.SDL_CONTROLLER_BUTTON_DPAD_UP) == 1;
+                DPad_DOWN = SDL_GameControllerGetButton(controller, SDL_GameControllerButton.SDL_CONTROLLER_BUTTON_DPAD_DOWN) == 1;
+                DPad_RIGHT = SDL_GameControllerGetButton(controller, SDL_GameControllerButton.SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == 1;
+                DPad_LEFT = SDL_GameControllerGetButton(controller, SDL_GameControllerButton.SDL_CONTROLLER_BUTTON_DPAD_LEFT) == 1;
+
+                Btn_A = SDL_GameControllerGetButton(controller, SDL_GameControllerButton.SDL_CONTROLLER_BUTTON_A) == 1;
+                Btn_B = SDL_GameControllerGetButton(controller, SDL_GameControllerButton.SDL_CONTROLLER_BUTTON_B) == 1;
+                Btn_X = SDL_GameControllerGetButton(controller, SDL_GameControllerButton.SDL_CONTROLLER_BUTTON_X) == 1;
+                Btn_Y = SDL_GameControllerGetButton(controller, SDL_GameControllerButton.SDL_CONTROLLER_BUTTON_Y) == 1;
+
+                TriggerLeft = NormalizeValue(SDL_GameControllerGetAxis(controller, SDL_GameControllerAxis.SDL_CONTROLLER_AXIS_TRIGGERLEFT));
+                TriggerRight = NormalizeValue(SDL_GameControllerGetAxis(controller, SDL_GameControllerAxis.SDL_CONTROLLER_AXIS_TRIGGERRIGHT));
+
+                Btn_L = SDL_GameControllerGetButton(controller, SDL_GameControllerButton.SDL_CONTROLLER_BUTTON_LEFTSTICK) == 1;
+                Btn_R = SDL_GameControllerGetButton(controller, SDL_GameControllerButton.SDL_CONTROLLER_BUTTON_RIGHTSTICK) == 1;
             }
             /// <summary>
             /// Převede hodnoty na -100 <> 100

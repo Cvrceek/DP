@@ -15,6 +15,7 @@ using RobotLibs.PCA9685;
 using Iot.Device.Pwm;
 using System.Device.I2c;
 using RobotLibs.CustomADS1115;
+using RobotLibs.XbeeCustom;
 
 namespace RobotController.Extensions
 {
@@ -54,6 +55,13 @@ namespace RobotController.Extensions
                 var settings = provider.GetRequiredService<ISettings>();
                 var i2c = I2cDevice.Create(new I2cConnectionSettings(settings.ADS1115_BusID, settings.ADS1115_Address));
                 return new ADS1115Custom(i2c);
+            });
+
+            services.AddSingleton<XBeeConnection>(provider =>
+            {
+                var settings = provider.GetRequiredService<ISettings>();
+                var xbee = new XBeeConnection(settings.SerialPortName, settings.SL, settings.SH, settings.SerialPortBaudRate);
+                return xbee;
             });
 
             return services;

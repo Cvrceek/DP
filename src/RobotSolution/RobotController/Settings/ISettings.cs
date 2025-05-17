@@ -17,7 +17,17 @@
 
         int ADS1115_BusID { get; set; }
         int ADS1115_Address { get; set; }
-        
+
+        int ExM_PWM_Pin { get; set; }
+        int ExM_DIR_Pin { get; set; }
+
+        int ExternalHolderServo_PWM_Pin { get; set; }
+        int ExternalDevice_PWM_Pin1 { get; set; }
+        int ExternalDevice_PWM_Pin2 { get; set; }
+
+        int LedRampRele_Pin { get; set; }
+        int ADS_Battery_Pin { get; set; }
+
         void Load();
         void Save();
     }

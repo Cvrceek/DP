@@ -19,6 +19,7 @@ namespace RobotLibs.XbeeCustom
         {
             get { return Data.Skip(5).ToList(); }
         }
-     
+
+        public bool DeliverySuccessful => FrameType == 0x8B && Data.Count >= 6 && Data[5] == 0x00;
     }
 }

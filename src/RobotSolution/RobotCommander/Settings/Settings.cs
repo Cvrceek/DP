@@ -81,5 +81,6 @@ namespace RobotCommander.Settings
         public string SL { get; set; }
         #endregion
 
+        public byte ExternalMotorDirection { get; set; }
     }
 }

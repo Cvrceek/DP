@@ -18,10 +18,6 @@ namespace RobotCommander.Inputs
     {
         private int direcitionX, direcitionY, mainMotorMinPower, mainMotorMaxPower;
 
-
-
-
-
         XBeeConnection xBeeConnection;
         ISettings settings;
 
@@ -32,19 +28,26 @@ namespace RobotCommander.Inputs
             direcitionX = direcitionY = 0;
             mainMotorMinPower = settings.Min_MotorsPower;
             mainMotorMaxPower = settings.Max_MotorsPower;
-            
-            
-            
-            
-            
-            
-            
+                      
             xBeeConnection = new XBeeConnection(settings.SerialPortName, settings.SL, settings.SH, settings.SerialPortBaudRate);
             inputDevice = new GamePad();
 
+            SetEvents();
+
             OpenConnection();
+            
             RunGamePad();
 
+            
+
+            xBeeConnection.TXFrameReceived += (s, e) =>
+            {
+                
+            };
+        }
+
+        private void SetEvents()
+        {
             inputDevice.SpeedChanged += (s, e) =>
             {
                 direcitionY = e;
@@ -60,13 +63,74 @@ namespace RobotCommander.Inputs
                 xBeeConnection.SendAPIMessage(values.ToBytes());
             };
 
-
-            xBeeConnection.FrameReceived += (s, e) =>
+            inputDevice.LightsChanged += (s, e) =>
             {
-                if(e.FrameType == 0x8B)
+                var values = new SwitchValues()
                 {
+                    EDTOType = RobotLibs.DTO.EDTOType.LedRamp,
+                    ON = e
+                };
+                xBeeConnection.SendAPIMessage(values.ToBytes());
+            };
 
-                }
+            inputDevice.HornChanged += (s, e) =>
+            {
+                var values = new SwitchValues()
+                {
+                    EDTOType = RobotLibs.DTO.EDTOType.Horn,
+                    ON = e
+                };
+                xBeeConnection.SendAPIMessage(values.ToBytes());
+            };
+
+            inputDevice.BeaconChanged += (s, e) =>
+            {
+                var values = new SwitchValues()
+                {
+                    EDTOType = RobotLibs.DTO.EDTOType.Beacon,
+                    ON = e
+                };
+                xBeeConnection.SendAPIMessage(values.ToBytes());
+            };
+
+            inputDevice.ExternalDeviceHolderPositionChanged += (s, e) =>
+            {
+                var values = new PWMValues()
+                {
+                    EDTOType = RobotLibs.DTO.EDTOType.ExternalDeviceHolderValues,
+                    Position = e
+                };
+                xBeeConnection.SendAPIMessage(values.ToBytes());
+            };
+
+            inputDevice.ExternalDevicePWM1Changed += (s, e) =>
+            {
+                var values = new PWMValues()
+                {
+                    EDTOType = RobotLibs.DTO.EDTOType.ExternalDevicePWM1,
+                    Position = e
+                };
+                xBeeConnection.SendAPIMessage(values.ToBytes());
+            };
+
+            inputDevice.ExternalDevicePWM2Changed += (s, e) =>
+            {
+                var values = new PWMValues()
+                {
+                    EDTOType = RobotLibs.DTO.EDTOType.ExternalDevicePWM2,
+                    Position = e
+                };
+                xBeeConnection.SendAPIMessage(values.ToBytes());
+            };
+
+            inputDevice.ExternalDeviceSpeedChanged += (s, e) =>
+            {
+                var values = new ExternalDeviceMotorValues()
+                {
+                    Speed = e,
+                    Orientation = settings.ExternalMotorDirection
+                };
+                xBeeConnection.SendAPIMessage(values.ToBytes());
             };
         }
 
@@ -75,24 +139,26 @@ namespace RobotCommander.Inputs
         {
             var dto = new MainMotorsValues();
 
-            dto.OrientationLeft = dto.OrientationRight = (byte)(direcitionY > 0 ? 1 : 0);
-
+            if (direcitionY > 0)
+                dto.OrientationLeft = dto.OrientationRight = 0;
+            else
+                dto.OrientationRight = dto.OrientationLeft = 1;
             //otocka na miste, dle zkoušek doplnit hodnoty
-            if (direcitionY == 0 && Math.Abs(direcitionX) == 100)
-            {
-                dto.SpeedLeft = 0;
-                dto.SpeedRight = 0;
-            }
+            //if (direcitionY == 0 && Math.Abs(direcitionX) == 100)
+            //{
+            //    dto.SpeedLeft = 0;
+            //    dto.SpeedRight = 0;
+            //}
             //stoji
-            else if (direcitionY == 0 && direcitionX == 0)
+            if (direcitionY == 0 && direcitionX == 0)
             {
                 dto.SpeedLeft = 0;
                 dto.SpeedRight = 0;
             }
             else
             {
-                decimal speedRight = (Math.Abs(direcitionY) * (100 - direcitionX)) / 100.0m;
-                decimal speedLeft = (Math.Abs(direcitionY) * (100 + direcitionX)) / 100.0m;
+                decimal speedLeft = (Math.Abs(direcitionY) * (100 - direcitionX)) / 100.0m;
+                decimal speedRight = (Math.Abs(direcitionY) * (100 + direcitionX)) / 100.0m;
 
                 if (speedLeft > 100 || speedRight > 100)
                 {

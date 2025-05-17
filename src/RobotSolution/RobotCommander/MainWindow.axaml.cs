@@ -57,7 +57,7 @@ namespace RobotCommander
             FPVManager = new FPVManager_OpenCV();
             FPVManager.FrameChanged += async (s, e) =>
             {
-                Dispatcher.UIThread.InvokeAsync(() =>
+                await Dispatcher.UIThread.InvokeAsync(() =>
                 {
                     _FPVImageView.Source = e;
                 }, DispatcherPriority.Render);

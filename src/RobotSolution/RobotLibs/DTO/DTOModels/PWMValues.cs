@@ -7,19 +7,17 @@ using UnitsNet;
 
 namespace RobotLibs.DTO.DTOModels
 {
-    public class ExternalDeviceHolderValues : IDTOModel<ExternalDeviceHolderValues>
+    public class PWMValues : IDTOModel<PWMValues>
     {
         //1+4 = 5 bytes
-        public EDTOType EDTOType
-        {
-            get { return EDTOType.ExternalDeviceHolderValues;}
-        }
+        public EDTOType EDTOType { get; set; }
         public int Position { get; set; }
 
-        public static ExternalDeviceHolderValues FromBytes(byte[] data)
+        public static PWMValues FromBytes(byte[] data)
         {
-            return new ExternalDeviceHolderValues
+            return new PWMValues
             {
+                EDTOType = (EDTOType)BitConverter.ToInt32(data, 0),
                 Position = BitConverter.ToInt32(data, 1),
             };
         }

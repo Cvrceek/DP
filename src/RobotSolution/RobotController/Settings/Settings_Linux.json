@@ -10,6 +10,13 @@
   "PCA9685_BusID": 1,
   "PCA9685_Address": 64,
   "ADS1115_BusID": 1,
-  "ADS1115_Address": 72
+  "ADS1115_Address": 72,
+  "ExM_PWM_Pin": 0,
+  "ExM_DIR_Pin": 0,
+  "ExternalHolderServo_PWM_Pin": 0,
+  "ExternalDevice_PWM_Pin1": 0,
+  "ExternalDevice_PWM_Pin2": 0,
+  "LedRampRele_Pin": 0,
+  "ADS_Battery_Pin": 0
 }
 

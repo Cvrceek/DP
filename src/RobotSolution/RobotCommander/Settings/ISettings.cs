@@ -12,6 +12,7 @@
         int Step_MainServo { get; set; }
         string SH { get; set; }
         string SL { get; set; }
+        byte ExternalMotorDirection { get; set; }
         void Load();
         void Save();
     }

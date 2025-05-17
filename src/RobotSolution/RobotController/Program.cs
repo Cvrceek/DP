@@ -1,70 +1,58 @@
 ﻿// See https://aka.ms/new-console-template for more information
-using System;
 using System.Device.Gpio;
-using System.IO;
-using Iot.Device.Amg88xx;
-using Iot.Device.Nmea0183;
 using Iot.Device.Pwm;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using RobotController;
 using RobotController.Extensions;
 using RobotController.Settings;
+using RobotLibs.CustomADS1115;
 using RobotLibs.Cytron;
 using RobotLibs.DTO;
 using RobotLibs.DTO.DTOModels;
 using RobotLibs.XbeeCustom;
-using Serilog;
-using Serilog.Extensions.Logging;
-using Serilog.Formatting.Json;
 
 
 
 internal class Program
 {
-    public static IServiceProvider Services { get; private set; }
-
+    static StateMonitor stateMonitor;
+    static InputsCommandTransmitter inputTransmitter;
     private static async Task Main(string[] args)
     {
-        var serviceProvider = ConfigureServices();
-
-        var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
-        logger.LogInformation("Hello, World! - Logováno pomocí Serilog");
-
-        var sett = serviceProvider.GetRequiredService<ISettings>();
-        var gpioController = serviceProvider.GetRequiredService<GpioController>();
-        var pca = serviceProvider.GetRequiredService<Pca9685>();
-
-        var motors = new CytronSmartDuoDrive(gpioController, pca, sett.M1_PWM_Pin, sett.M1_DIR_Pin, sett.M2_PWM_Pin, sett.M2_DIR_Pin);
-        
-        XBeeConnection connection = new XBeeConnection(sett.SerialPortName, sett.SL, sett.SH, sett.SerialPortBaudRate);
-        connection.Open();
-
-
-
-        connection.FrameReceived += async (s, e) =>
+        using CancellationTokenSource cts = new();
+        Console.CancelKeyPress += (sender, eventArgs) =>
         {
-            if (e.RFData[0] == (byte)EDTOType.MainMotorsValues)
-            {
-                var values = MainMotorsValues.FromBytes(e.RFData.ToArray());
-                motors.SetMotors(values.OrientationRight, values.OrientationLeft, values.SpeedRight, values.SpeedLeft);
-                
-                Console.WriteLine($"RFData\nOL:{values.OrientationLeft}  OR:{values.OrientationRight}  SL:{values.SpeedLeft}   SR:{values.SpeedRight}");
-            }
-            else
-            {
+            cts.Cancel();
+            eventArgs.Cancel = true; 
+        };
+        App.ServiceProvider = ConfigureServices();
 
-            }
+        inputTransmitter = new InputsCommandTransmitter();
+        inputTransmitter.SetEvents();
+
+        stateMonitor = new StateMonitor();
+        stateMonitor.StopRobot += (s, e) =>
+        {
+            inputTransmitter.Stop();
         };
 
+        _ = Task.Run(() => stateMonitor.SendStatusAndWatchCommunication(cts.Token));
 
-        await Task.Delay(Timeout.Infinite);
+        try
+        {
+            await Task.Delay(Timeout.Infinite, cts.Token);
+        }
+        catch (TaskCanceledException)
+        {
+            
+        }
     }
 
     private static ServiceProvider ConfigureServices()
     {
         var serviceCollection = new ServiceCollection();
         serviceCollection.AddRobotControllerServices();
-        Services = serviceCollection.BuildServiceProvider();
         return serviceCollection.BuildServiceProvider();
     }
 }

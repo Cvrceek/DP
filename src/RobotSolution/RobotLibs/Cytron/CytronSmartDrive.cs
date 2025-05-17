@@ -35,10 +35,6 @@ namespace RobotLibs.Cytron
             {
                 gpio.Write(pinDIR, direction == 0 ? PinValue.Low : PinValue.High);
                 pca9685.SetDutyCycle(pinPWM, speed / 100.0);
-
-                var xx = gpio.Read(pinDIR);
-                Console.WriteLine($"speed: {speed}   dir: {direction}     PINVALUE: {xx.ToString()}");
-
             }
             catch(Exception ex)
             {
